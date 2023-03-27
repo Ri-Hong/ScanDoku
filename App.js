@@ -10,7 +10,7 @@ export default function App() {
 
   function generateSudoku() {
     /*
-      {rows: [{index: 0, cols: [{row: 0, col: 0, value: 1, editing, false, readonly: true}, ...]}, ...]}
+      {rows: [{index: 0, cols: [{row: 0, col: 0, value: 1, selected, false, readonly: true}, ...]}, ...]}
     */ 
     const raw = generator.makepuzzle()
     const result = {rows: []}
@@ -23,7 +23,7 @@ export default function App() {
           row: i,
           col: j,
           value: value,
-          editing: false,
+          selected: false,
           readonly: value !== null
         };
         row.cols.push(col);
@@ -33,7 +33,7 @@ export default function App() {
     return result;
   }
 
-  const sudoku = React.useMemo(() => generateSudoku(), []);
+  const sudoku = useMemo(() => generateSudoku(), []);
 
   const [digitInput, setDigitInput] = useState(null);
 

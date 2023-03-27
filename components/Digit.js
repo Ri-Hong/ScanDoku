@@ -8,7 +8,6 @@ import {
 } from './GlobalStyle';
 
 export default function Digit({ setDigitInput, id }) {
-  
   const handleDigitPress = () => {
     setDigitInput(id);
     // console.log(id, "dddd");
