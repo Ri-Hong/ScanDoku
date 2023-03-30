@@ -1,10 +1,11 @@
-import React, { useState, useMemo, useCallback } from 'react'
+// App.js
+import React, { useState, useMemo, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import generator from "sudoku";
 
-import SudokuBoard from "./components/SudokuBoard"
-import Digits from "./components/Digits"
+import Game from "./components/Game"
+
 
 export default function App() {
 
@@ -35,15 +36,10 @@ export default function App() {
 
   const sudoku = useMemo(() => generateSudoku(), []);
 
-  const [digitInput, setDigitInput] = useState(null);
-
-  // console.log("App rerender")
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Hello World!!!</Text>
-
-      <SudokuBoard digitInput={digitInput} sudoku={sudoku}></SudokuBoard>
-      <Digits setDigitInput={setDigitInput}></Digits>
+      
+      <Game game={sudoku}></Game>
 
       <StatusBar style="auto" />
     </SafeAreaView>

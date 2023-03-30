@@ -1,3 +1,4 @@
+// SudokuCell.js
 import React, { memo, useEffect } from 'react'
 
 import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
@@ -5,14 +6,27 @@ import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Saf
 import {
   CellSize,
   BoardWidth,
-  BorderWidth,
 } from './GlobalStyle';
 
-const SudokuCell = ({ cell, setSelectedCell, isSelected, digitInput }) => {
-  console.log("Cell Rerender", cell);
 
-  useEffect(() => {
-  }, [cell.value]);
+
+const SudokuCell = memo(({ cell, setSelectedCell, isSelected }) => {
+  console.log("Cell Rerender", cell);
+  // console.log("Cellval", cell.value);
+
+  const getBorderStyle = () => {
+    const borderStyles = [];
+    const isThickLeftBorder = cell.col % 3 === 0;
+    const isThickTopBorder = cell.row % 3 === 0;
+    const isThickRightBorder = cell.col === 8;
+    const isThickBottomBorder = cell.row === 8;
+  
+    if (isThickLeftBorder) borderStyles.push(styles.thickLeftBorder);
+    if (isThickTopBorder) borderStyles.push(styles.thickTopBorder);
+    if (isThickRightBorder) borderStyles.push(styles.thickRightBorder);
+    if (isThickBottomBorder) borderStyles.push(styles.thickBottomBorder);
+    return borderStyles;
+  };
 
   const handlePress = () => {
     setSelectedCell(cell.row * 10 + cell.col);
@@ -20,7 +34,7 @@ const SudokuCell = ({ cell, setSelectedCell, isSelected, digitInput }) => {
   }
 
   return (
-    <View style={styles.cell}>
+    <View style={[styles.cell, ...getBorderStyle()]}>
       {!cell.readonly ? 
         <TouchableOpacity activeOpacity={1} onPress={handlePress} style={[styles.touchable, isSelected && styles.selected]}>
           <Text style={styles.text}>{cell.value}</Text>
@@ -30,14 +44,14 @@ const SudokuCell = ({ cell, setSelectedCell, isSelected, digitInput }) => {
 
     </View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   touchable: {
     width: CellSize,
     height: CellSize,
-    borderWidth: 3,
-    borderColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cell: {
     flex: 1,
@@ -58,7 +72,23 @@ const styles = StyleSheet.create({
   },
   readOnly: {
     fontWeight: 'bold'
+  },
+  thickLeftBorder: {
+    borderLeftWidth: 3,
+    borderLeftColor: 'black',
+  },
+  thickTopBorder: {
+    borderTopWidth: 3,
+    borderTopColor: 'black',
+  },
+  thickRightBorder: {
+    borderRightWidth: 3,
+    borderRightColor: 'black',
+  },
+  thickBottomBorder: {
+    borderBottomWidth: 3,
+    borderBottomColor: 'black',
   }
 });
 
-export default memo(SudokuCell);
+export default SudokuCell;
