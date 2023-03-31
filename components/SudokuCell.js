@@ -14,6 +14,7 @@ const SudokuCell = memo(({ cell, setSelectedCell, isSelected }) => {
   console.log("Cell Rerender", cell);
   // console.log("Cellval", cell.value);
 
+  // Checks if the cell is on the border and returns the appropriate style
   const getBorderStyle = () => {
     const borderStyles = [];
     const isThickLeftBorder = cell.col % 3 === 0;
@@ -28,16 +29,25 @@ const SudokuCell = memo(({ cell, setSelectedCell, isSelected }) => {
     return borderStyles;
   };
 
+  // Checks if the value in the cell is invalid and returns the appropriate style
+  const getInvalidStyle = () => {
+    const invalidStyles = [];
+    if (!cell.isValid) {
+      invalidStyles.push(styles.invalid);
+      console.log("INVALID")
+    }
+    return invalidStyles;
+  };
+
   const handlePress = () => {
     setSelectedCell(cell.row * 10 + cell.col);
-    // console.log(":dd");
   }
 
   return (
     <View style={[styles.cell, ...getBorderStyle()]}>
       {!cell.readonly ? 
         <TouchableOpacity activeOpacity={1} onPress={handlePress} style={[styles.touchable, isSelected && styles.selected]}>
-          <Text style={styles.text}>{cell.value}</Text>
+          <Text style={[styles.text, ...getInvalidStyle()]}>{cell.value}</Text>
         </TouchableOpacity> :
         <Text style={[styles.text, styles.readOnly]}>{cell.value}</Text>
       }
@@ -59,7 +69,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: 'grey'
+    borderColor: 'grey',
   },
   selected: {
     borderWidth: 3,
@@ -88,6 +98,9 @@ const styles = StyleSheet.create({
   thickBottomBorder: {
     borderBottomWidth: 3,
     borderBottomColor: 'black',
+  },
+  invalid: {
+    color: 'red'
   }
 });
 

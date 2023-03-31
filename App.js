@@ -11,7 +11,7 @@ export default function App() {
 
   function generateSudoku() {
     /*
-      {rows: [{index: 0, cols: [{row: 0, col: 0, value: 1, selected, false, readonly: true}, ...]}, ...]}
+      {rows: [{index: 0, cols: [{row: 0, col: 0, value: 1, selected, false, readonly: true, isInvalid}, ...]}, ...]}
     */ 
     const raw = generator.makepuzzle()
     const result = {rows: []}
@@ -25,7 +25,8 @@ export default function App() {
           col: j,
           value: value,
           selected: false,
-          readonly: value !== null
+          readonly: value !== null,
+          isValid: true
         };
         row.cols.push(col);
       }
