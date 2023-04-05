@@ -1,12 +1,28 @@
-// SudokuBoard.js
-import React, { useState, useEffect } from "react";
+// SudokuBoard.tsx
+import React, { ReactElement } from "react";
 import { StyleSheet, Text, View } from "react-native";
-
 import { CellSize, BoardWidth } from "./GlobalStyle";
 import SudokuCell from "./SudokuCell";
 
-export default function SudokuBoard({ sudoku, selectedCell, setSelectedCell }) {
-    
+interface SudokuBoardProps {
+  sudoku: {
+    rows: {
+      index: number;
+      cols: {
+        row: number;
+        col: number;
+        value: number | null;
+        selected: boolean;
+        readonly: boolean;
+        isValid: boolean;
+      }[];
+    }[];
+  };
+  selectedCell: number | null;
+  setSelectedCell: (cellIndex: number | null) => void;
+}
+
+export default function SudokuBoard({ sudoku, selectedCell, setSelectedCell }: SudokuBoardProps): ReactElement {
   return (
     <View style={styles.board}>
       {sudoku.rows.map((row) => (
@@ -17,7 +33,6 @@ export default function SudokuBoard({ sudoku, selectedCell, setSelectedCell }) {
               cell={col}
               setSelectedCell={setSelectedCell}
               isSelected={col.row * 10 + col.col === selectedCell}
-              value={col.value}
             />
           ))}
         </View>

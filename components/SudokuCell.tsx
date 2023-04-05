@@ -1,18 +1,23 @@
-// SudokuCell.js
-import React, { memo, useEffect } from 'react'
+// SudokuCell.tsx
+import React, { ReactElement, memo } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { CellSize, BoardWidth } from './GlobalStyle';
 
-import { StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, SafeAreaView } from 'react-native';
-// import { TouchableHighlight } from 'react-native-web';
-import {
-  CellSize,
-  BoardWidth,
-} from './GlobalStyle';
+interface SudokuCellProps {
+  cell: {
+    row: number;
+    col: number;
+    value: number | null;
+    selected: boolean;
+    readonly: boolean;
+    isValid: boolean;
+  };
+  setSelectedCell: (cellIndex: number | null) => void;
+  isSelected: boolean;
+}
 
-
-
-const SudokuCell = memo(({ cell, setSelectedCell, isSelected }) => {
+const SudokuCell = memo(({ cell, setSelectedCell, isSelected }: SudokuCellProps): ReactElement => {
   console.log("Cell Rerender", cell);
-  // console.log("Cellval", cell.value);
 
   // Checks if the cell is on the border and returns the appropriate style
   const getBorderStyle = () => {
@@ -21,7 +26,7 @@ const SudokuCell = memo(({ cell, setSelectedCell, isSelected }) => {
     const isThickTopBorder = cell.row % 3 === 0;
     const isThickRightBorder = cell.col === 8;
     const isThickBottomBorder = cell.row === 8;
-  
+
     if (isThickLeftBorder) borderStyles.push(styles.thickLeftBorder);
     if (isThickTopBorder) borderStyles.push(styles.thickTopBorder);
     if (isThickRightBorder) borderStyles.push(styles.thickRightBorder);
@@ -51,7 +56,6 @@ const SudokuCell = memo(({ cell, setSelectedCell, isSelected }) => {
         </TouchableOpacity> :
         <Text style={[styles.text, styles.readOnly]}>{cell.value}</Text>
       }
-
     </View>
   );
 });
